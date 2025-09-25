@@ -1,0 +1,77 @@
+#include <iostream>
+#include <cctype>
+
+void codificar(char mensaje[], int codigo, int p, int size, int solicitud);
+
+int main() {
+    char mensaje[255];
+    int codigo = 0;
+    int solicitud = 1;
+    int size = 0;
+    int p = 0;
+    int array[11] = {1,3,5,7,9,11,15,19,21,23,25};
+    while(solicitud != 3){
+        if(solicitud == 1){
+            size = 0;
+            std::cout << "Que mesaje quieres codificar? ";
+            std::cin >> mensaje;
+            std::cout << "Codigo de suma: ";
+            std::cin >> codigo;
+            std::cout << "Codigo de multiplicacion, tus opciones(1,3,5,7,9,11,15,19,21,23,25): ";
+            std::cin >> p;
+            std::cout << p % 2 << p % 13 << "\n";
+            while((p % 2) == 0 || (p % 13) == 0){
+                std::cout << "Codigo de multiplicacion, tus opciones(1,3,5,7,9,11,15,19,21,23,25): ";
+                std::cin >> p;
+            }
+            while(mensaje[size] != '\0'){
+                if(isalpha(mensaje[size])){
+                    mensaje[size] = toupper(mensaje[size]);
+                }
+                size++;
+            }
+            codificar(mensaje, codigo, p, size, solicitud);
+            std::cout << "Mensaje Codificado: " << mensaje << "\n";
+        }
+        if(solicitud == 2){
+            std::cout << "Codigo de suma: ";
+            std::cin >> codigo;
+            std::cout << "Codigo de multiplicacion: ";
+            std::cin >> p;
+            codificar(mensaje, codigo, p, size, solicitud);
+            std::cout << "Mensaje Decodificado con codigo " << codigo << " es: "<< mensaje << "\n";
+        }
+        if(solicitud == 3){
+            solicitud = 3;
+        }
+        std::cout << "\n" << "Que deseas hace:"<< "\n";
+        std::cout << "1)codificar mensaje nuevo"<< "\n";
+        std::cout << "2)dedificar mensaje ultimo mensaje"<< "\n";
+        std::cout << "3)terminar "<< "\n";
+        std::cin >> solicitud;
+    }
+    return 0;
+}
+
+void codificar(char mensaje[], int codigo, int p, int size, int solicitud){
+    int posicion = 0;
+    int residuo = 0;
+    int q = 0;
+    for(int i = 0; i < size; i++){
+        if(solicitud == 1){
+            posicion = ((mensaje[i] - 65)*p + codigo) % 26;    
+        }
+        if(solicitud == 2){
+            for(int i = 0; i <= 25; i++){
+                residuo = (p*i) % 26;
+                if(residuo == 1){
+                    q = i;
+                    i = 25;
+                } 
+            }
+            posicion = ((mensaje[i] - 65 - codigo)*q) % 26; 
+            std::cout << posicion;   
+        }
+        mensaje[i] = posicion + 65;
+    }
+} 
