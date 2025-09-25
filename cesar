@@ -1,0 +1,58 @@
+#include <iostream>
+#include <cctype>
+
+void codificar(char mensaje[], int codigo, int size, int solicitud);
+
+int main() {
+    char mensaje[255];
+    int codigo = 0;
+    int solicitud = 1;
+    int size = 0;
+    while(solicitud != 3){
+        if(solicitud == 1){
+            size = 0;
+            std::cout << "Que mesaje quieres codificar? ";
+            std::cin >> mensaje;
+            std::cout << "Codigo: ";
+            std::cin >> codigo;
+            while(mensaje[size] != '\0'){
+                if(isalpha(mensaje[size])){
+                    mensaje[size] = toupper(mensaje[size]);
+                }
+                size++;
+            }
+            codificar(mensaje, codigo, size, solicitud);
+            std::cout << "Mensaje Codificado: " << mensaje << "\n";
+        }
+        if(solicitud == 2){
+            std::cout << "Codigo: ";
+            std::cin >> codigo;
+            codificar(mensaje, codigo, size, solicitud);
+            std::cout << "Mensaje Decodificado con codigo " << codigo << " es: "<< mensaje << "\n";
+        }
+        if(solicitud == 3){
+            solicitud = 3;
+        }
+        std::cout << "\n" << "Que deseas hace:"<< "\n";
+        std::cout << "1)codificar mensaje nuevo"<< "\n";
+        std::cout << "2)dedificar mensaje ultimo mensaje"<< "\n";
+        std::cout << "3)terminar "<< "\n";
+        std::cin >> solicitud;
+    }
+    return 0;
+}
+
+void codificar(char mensaje[], int codigo, int size, int solicitud){
+    int posicion = 0;
+    for(int i = 0; i < size; i++){
+        posicion = mensaje[i] - 65;
+        if(solicitud == 1){
+            posicion = (mensaje[i] - 65 + codigo) % 26;    
+        }
+        if(solicitud == 2){
+            posicion = (mensaje[i] - 65 - codigo) % 26; 
+            std::cout << posicion;   
+        }
+        mensaje[i] = posicion + 65;
+    }
+}
